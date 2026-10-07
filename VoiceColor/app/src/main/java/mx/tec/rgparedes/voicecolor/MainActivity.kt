@@ -96,7 +96,19 @@ fun VoiceColorScreen() {
                     ?.firstOrNULL()
                 if (spoken != null) { applyColor(spoken) }
             }
+
+            override fun onError(error : int){
+                isListening = false
+                status = "Error: $error, try again"
+            }
+            override fun onBeginningOfSpeech() {}
+            override fun onBufferRecieved(buffer : ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onRmsChanged(rmsdB: Float) {}
         })
+        onDispose { recognizer.destroy() }
     }
 
     Column(
