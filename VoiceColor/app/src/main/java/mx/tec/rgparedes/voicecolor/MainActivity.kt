@@ -111,6 +111,16 @@ fun VoiceColorScreen() {
         onDispose { recognizer.destroy() }
     }
 
+    fun startListening() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecgonizerIntent.EXTRA_LANGUAGE)
+        }
+        isListening = true
+        recognize.startListening()
+    }
+
+
     Column(
         modifier = Modifier.fillMaxSize().background(backgroundColor).padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
