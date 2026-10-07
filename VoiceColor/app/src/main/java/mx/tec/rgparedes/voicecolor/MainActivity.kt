@@ -117,7 +117,12 @@ fun VoiceColorScreen() {
             putExtra(RecgonizerIntent.EXTRA_LANGUAGE)
         }
         isListening = true
-        recognize.startListening()
+        recognize.startListening(intent)
+    }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActvityResultContracts.RequestPermissions()
+    ) { granted ->
+        if(granted) startListening() else status = "Microphone permission denied."
     }
 
 
