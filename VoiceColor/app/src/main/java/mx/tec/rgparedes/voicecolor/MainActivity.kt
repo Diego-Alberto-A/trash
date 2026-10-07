@@ -47,7 +47,7 @@ fun VoiceColorScreen() {
     var isListening by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
-    var tts by remember { mutableStateOf<TextToSpeech?>(value = null)}
+    var tts by remember { mutableStateOf<TextToSpeech?>(null)}
 
     DisposableEffect(key = context){
         var engine: TextToSpeech(context) {result ->
@@ -84,6 +84,19 @@ fun VoiceColorScreen() {
         } else {
             status = "Didn't understand \"$spoken\""
         }
+    }
+
+    val recognizer = remember {SpeechRecognizer.createSpeechRecognizer(context)}
+    DisposableEffect(recognizer){
+        recognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {
+                isListening = true
+                val spoken = results
+                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                    ?.firstOrNULL()
+                if (spoken != null) { applyColor(spoken) }
+            }
+        })
     }
 
     Column(
